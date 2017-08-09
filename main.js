@@ -9,10 +9,7 @@ let name = [];
 let website = [];
 
 
-//filter the results from the search
-
-
-
+//Fetch
   fetch("http://jsonplaceholder.typicode.com/users")
     .then(function(response) {
         if (response.status !== 200) {
@@ -43,7 +40,8 @@ let website = [];
     });
 
 // function searchFunction (){
-//   if (something being entered === number from identifier){
+//   let inputValue = "";
+//   if (inputValue === receivedData.text){
 //     return name;
 //   } else if (something being entered === website from identifier) {
 //     return name;
