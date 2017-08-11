@@ -1,64 +1,86 @@
-//Element Grabs
-let input = document.getElementById("myInput");
-let container = document.getElementsByClassName("container")
-
-//Variables
-let receivedData = [];
-let identifier = [];
-// let name = [];
-let website = [];
-let api= "http://jsonplaceholder.typicode.com/users?"
-let query = "=";
-let email= [];
-
-
-//Fetch
-fetch("http://jsonplaceholder.typicode.com/users?=" + input)
-    .then(function(response) {
-        if (response.status !== 200) {
-          return;
-        }
-        response.json().then(function(data) { //data is present in array
-          for (let i=0; i<data.length; i++)
-          receivedData.push(data[i]);
-          console.log(data);
-        });
-      }
-    )
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
-    });
-
-input.addEventListener("keypress", itemKeyPress);
-
-function ask(){
-  let input = document.getElementById("myInput");
-  let url = api + query + input.value;
-  let result = document.createElement("div");
-  let newName = document.createElement("h1");
-  result.innerHTML= `
-  <h1>${input.value}</h1>
-  <div class="name"></div>`
-  console.log(result);
-}
-
-function itemKeyPress(event){
-  if (event.which === 13){
-    ask.call(this);
-  }
-}
-
-//Function that goes through and filters based on the values present in the table. Returns only those present matching the values
-// function filter(){
-//   let filterValue=document.getElementById("myInput").value.toUppercase();
-//   let table=document.getElementById("myTable");
-//   let cells=table.querySelectorAll("td.items");
-//   for (let i = 0; i < cells.length; i++) {
-//     let a = cells[i].getElementsByTagName("a")[0];
-//     if (a.innerHTML.toUppercase().indexOf(filterValue) > -1){
-//       cells[i].style.display = "";
-//     } else {
-//       cells[i].style.display = "none";
-//     }
+// //Element Grabs
+// let inputElement = document.getElementById("myInput");
+// let container = document.getElementsByClassName("container")
+// let api= "http://jsonplaceholder.typicode.com/users?="
+//
+// function fetchStuff(){
+// fetch(api)
+//     .then(function(response) {
+//         if (response.status !== 200) {
+//           return;
+//         }
+//         response.json().then(function(Object) {
+//           //data is present in array
+//           console.log(Object);
+//
+//           let inputValue=inputElement.value;
+//           // console.log(inputValue);
+//           for (i in Object){
+//               console.log("I am here");
+//             if(inputValue===Object[i].name){
+//               console.log(inputValue===Object[i].name);
+//             }
+//           }
+//         });
+//       }
+//     )
+//     .catch(function(err) {
+//       console.log("Fetch Error :-S", err);
+//     });
+// }
+//
+// inputElement.addEventListener("keypress", itemKeyPress);
+// function itemKeyPress(event){
+//   if (event.key == 'Enter'){
+//     fetchStuff();
+//     inputElement.value = "";
 //   }
 // }
+
+
+
+let container = document.querySelector(".container")
+let inputElement = document.getElementById("myInput");
+
+//set event listener to trigger search only after 'enter' is pressed.
+inputElement.addEventListener("keypress", function(event) {
+  if (event.key == "Enter") {
+    fetchStuff();
+  }
+});
+
+//fetch
+function fetchStuff() {
+  fetch("http://jsonplaceholder.typicode.com/users?=")
+      .then(function(response) {
+          if (response.status !== 200) {
+            return;
+          }
+
+         //successful fetch function
+          response.json().then(function(data){
+            let returnResponse = document.createElement("div");
+            let input2 = inputElement.value;
+            for (let i=0; i<data.length; i++){
+              if (input2===data[i].name){
+                console.log(data[i].name);
+                returnResponse.innerHTML = `
+                <p></p>
+                <img src="http://via.placeholder.com/100" alt="Image Missing">
+                <p><span>Name:</span>${data[i].name}</p>
+                <p><span>ID: </span>${data[i].id}</p>
+                <p><span>Username: </span>${data[i].username}</p>
+                <p><span>Email: </span>${data[i].email}</p>
+                `;
+                container.appendChild(returnResponse);
+            }}
+            console.log(data);
+          });
+        }
+      )
+
+     //error
+      .catch(function(err) {
+        console.log("Fetch Error :-S", err);
+      });
+}
